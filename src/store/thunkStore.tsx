@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import todoThunkSlice from "./todoThunk/todoThunkSlice";
+import todoThunkSlice from "./feature/todoThunk/todoThunkSlice";
 import controlSlice from "./feature/control/controlSlice";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 

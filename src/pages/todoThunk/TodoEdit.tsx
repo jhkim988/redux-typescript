@@ -6,7 +6,7 @@ import {
   useAppSelector,
 } from "../../store/thunkStore";
 import { editCancelControl } from "../../store/feature/control/controlSlice";
-import { editTodoFetch } from "../../store/todoThunk/todoThunkSlice";
+import { editTodoFetch } from "../../store/feature/todoThunk/todoThunkSlice";
 
 const CHANGE_TEXT = "change_text";
 const CHANGE_STATUS = "change_status";

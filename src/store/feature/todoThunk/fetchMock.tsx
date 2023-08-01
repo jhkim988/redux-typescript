@@ -1,4 +1,4 @@
-import { TodoState } from "../feature/todo/todoSlice";
+import { TodoState } from "../todo/todoSlice";
 
 export const fetchMock: <T>(
   url: string,

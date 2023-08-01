@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import { detailControl } from "../../store/feature/control/controlSlice";
 import { Todo } from "../../store/feature/todo/todoSlice";
-import { getTodoList, selectTodo } from "../../store/todoThunk/todoThunkSlice";
+import {
+  getTodoList,
+  selectTodo,
+} from "../../store/feature/todoThunk/todoThunkSlice";
 import {
   RootState,
   useAppDispatch,

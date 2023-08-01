@@ -6,7 +6,7 @@ import {
 import {
   removeTodoFetch,
   unselectTodo,
-} from "../../store/todoThunk/todoThunkSlice";
+} from "../../store/feature/todoThunk/todoThunkSlice";
 import {
   detailCancelControl,
   editControl,

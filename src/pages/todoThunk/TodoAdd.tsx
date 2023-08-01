@@ -2,7 +2,7 @@ import { useReducer } from "react";
 import { TodoAddArgs } from "../../store/feature/todo/todoSlice";
 import { useAppDispatch } from "../../store/thunkStore";
 import { addCancelControl } from "../../store/feature/control/controlSlice";
-import { addTodoFetch } from "../../store/todoThunk/todoThunkSlice";
+import { addTodoFetch } from "../../store/feature/todoThunk/todoThunkSlice";
 
 const CHANGE_TEXT = "change_text";
 const CHANGE_YEAR = "change_year";

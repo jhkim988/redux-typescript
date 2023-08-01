@@ -1,11 +1,8 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { Todo, TodoAddArgs, TodoState } from "../feature/todo/todoSlice";
 import { fetchMock as fetch, todoListMock } from "./fetchMock";
-import { AppDispatch } from "../thunkStore";
-import {
-  detailCancelControl,
-  detailControl,
-} from "../feature/control/controlSlice";
+import { Todo, TodoAddArgs, TodoState } from "../todo/todoSlice";
+import { AppDispatch } from "../../thunkStore";
+import { detailCancelControl, detailControl } from "../control/controlSlice";
 
 const initialState: TodoState = {
   todoList: {},

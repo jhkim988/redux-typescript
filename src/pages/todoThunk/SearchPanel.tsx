@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAppDispatch } from "../../store/thunkStore";
-import { setSearchKeyword } from "../../store/todoThunk/todoThunkSlice";
+import { setSearchKeyword } from "../../store/feature/todoThunk/todoThunkSlice";
 
 export function SearchPanel() {
   const [keyword, setKeyword] = useState<string>("");
