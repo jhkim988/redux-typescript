@@ -3,7 +3,7 @@ import {
   RootState,
   useAppDispatch,
   useAppSelector,
-} from "../../store/thunkStore";
+} from "../../store/queryStore";
 import { TodoAdd } from "./TodoAdd";
 import { TodoDetail } from "./TodoDetail";
 import { TodoEdit } from "./TodoEdit";
