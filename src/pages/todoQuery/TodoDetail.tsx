@@ -5,7 +5,7 @@ import {
 import {
   useGetTodoDetailQuery,
   useRemoveTodoMutation,
-} from "../../store/feature/todoQuery/todoApiSlice";
+} from "../../store/feature/todoQuery/apiSlice";
 import { unselectTodo } from "../../store/feature/todoQuery/todoSlice";
 import {
   RootState,

@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { useGetTodoListQuery } from "../../store/feature/todoQuery/todoApiSlice";
+import { useGetTodoListQuery } from "../../store/feature/todoQuery/apiSlice";
 import { RootState, useAppDispatch } from "../../store/queryStore";
 import { TodoState } from "../../store/feature/todo/todoSlice";
 import { selectTodo } from "../../store/feature/todoQuery/todoSlice";

@@ -6,7 +6,7 @@ import {
   useAppSelector,
 } from "../../store/queryStore";
 import { editCancelControl } from "../../store/feature/control/controlSlice";
-import { useEditTodoMutation } from "../../store/feature/todoQuery/todoApiSlice";
+import { useEditTodoMutation } from "../../store/feature/todoQuery/apiSlice";
 
 const CHANGE_TEXT = "change_text";
 const CHANGE_STATUS = "change_status";
