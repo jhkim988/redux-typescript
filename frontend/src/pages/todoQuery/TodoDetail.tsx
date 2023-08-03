@@ -14,16 +14,19 @@ import {
 } from "../../store/queryStore";
 
 export function TodoDetail() {
-  const selectTodoData = useAppSelector(
-    (state: RootState) => state.todo.select
-  );
-  /* Not Choose, TodoDetail 은 selectTodo 가 null 이 아닐 때 렌더링 된다. */
-  if (selectTodoData === null) {
-    throw new Error("selectTodo 가 null 이면서 TodoDetail 렌더링");
-  }
+  const selectedId = useAppSelector((state: RootState) => state.todo.selectId);
   const dispatch = useAppDispatch();
-  const { data: selectTodoDetail } = useGetTodoDetailQuery(selectTodoData.id);
+  const { data: selectTodoDetail, isSuccess } = useGetTodoDetailQuery(
+    selectedId ?? "",
+    { skip: selectedId === null }
+  );
   const [removeTodo] = useRemoveTodoMutation();
+
+  /* Not Choose, TodoDetail 은 selectTodo 가 null 이 아닐 때 렌더링 된다. */
+  if (selectedId === null) {
+    // throw new Error("selectTodo 가 null 이면서 TodoDetail 렌더링");
+    return <div>Not Found!</div>;
+  }
 
   if (selectTodoDetail === undefined) {
     return <div>Not Found!</div>;
@@ -35,14 +38,15 @@ export function TodoDetail() {
   };
 
   const handleRemove = () => {
-    removeTodo(selectTodoData.id);
+    removeTodo(selectedId);
+    dispatch(detailCancelControl());
   };
 
   const handleEdit = () => {
     dispatch(editControl());
   };
 
-  return (
+  return isSuccess ? (
     <div className="todo_detail">
       <div>text: {selectTodoDetail.text}</div>
       <div>status: {selectTodoDetail.status}</div>
@@ -51,5 +55,7 @@ export function TodoDetail() {
       <button onClick={handleEdit}>편집</button>
       <button onClick={handleRemove}>삭제</button>
     </div>
+  ) : (
+    <div>Loading...</div>
   );
 }

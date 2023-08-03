@@ -1,36 +1,41 @@
 import { useSelector } from "react-redux";
 import { useGetTodoListQuery } from "../../store/feature/todoQuery/apiSlice";
 import { RootState, useAppDispatch } from "../../store/queryStore";
-import { TodoState } from "../../store/feature/todo/todoSlice";
 import { selectTodo } from "../../store/feature/todoQuery/todoSlice";
+import { detailControl } from "../../store/feature/control/controlSlice";
 
 export function TodoList() {
-  const { data: todoList } = useGetTodoListQuery("") as {
-    data: TodoState["todoList"];
-  };
-  const selected = useSelector((state: RootState) => state.todo.select);
+  const searchKeyword = useSelector(
+    (state: RootState) => state.todo.searchKeyword
+  );
+  const { data: todoList, isSuccess } = useGetTodoListQuery(searchKeyword);
+  const selectedId = useSelector((state: RootState) => state.todo.selectId);
+
   const dispatch = useAppDispatch();
 
   const handleSelect = (todoId: string) => {
     dispatch(selectTodo(todoId));
+    dispatch(detailControl());
   };
 
+  console.log("TodoList", typeof selectedId);
+
   return (
-    <div className="todo_list">
-      {Object.values(todoList).map((todo) => (
-        <div
-          key={todo.id}
-          style={{
-            backgroundColor:
-              selected !== null && selected.id === todo.id
-                ? "#6666FF"
-                : "transparent",
-          }}
-          onClick={() => handleSelect(todo.id)}
-        >
-          {todo.text} {todo.status} {new Date(todo.deadline).toString()}
-        </div>
-      ))}
-    </div>
+    isSuccess && (
+      <div className="todo_list">
+        {Object.values(todoList).map((todo) => (
+          <div
+            key={todo.id}
+            style={{
+              backgroundColor:
+                selectedId === todo.id ? "#6666FF" : "transparent",
+            }}
+            onClick={() => handleSelect(todo.id)}
+          >
+            {todo.text} {todo.status} {new Date(todo.deadline).toString()}
+          </div>
+        ))}
+      </div>
+    )
   );
 }

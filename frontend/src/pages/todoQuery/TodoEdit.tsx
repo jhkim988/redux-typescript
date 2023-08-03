@@ -5,8 +5,14 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../store/queryStore";
-import { editCancelControl } from "../../store/feature/control/controlSlice";
-import { useEditTodoMutation } from "../../store/feature/todoQuery/apiSlice";
+import {
+  detailControl,
+  editCancelControl,
+} from "../../store/feature/control/controlSlice";
+import {
+  useEditTodoMutation,
+  useGetTodoDetailQuery,
+} from "../../store/feature/todoQuery/apiSlice";
 
 const CHANGE_TEXT = "change_text";
 const CHANGE_STATUS = "change_status";
@@ -54,14 +60,6 @@ function reducer(state: InputState, action: ActionType): InputState {
   }
 }
 
-const initState: InputState = {
-  text: "",
-  status: "unstarted",
-  year: 1900,
-  month: 1,
-  date: 1,
-};
-
 function initFunction(selectedTodo: Todo): InputState {
   const selectedDeadline = new Date(selectedTodo.deadline);
   return {
@@ -87,16 +85,22 @@ function inputToTodo(id: string, input: InputState): Todo {
 }
 
 export function TodoEdit() {
-  const selectTodoData = useAppSelector(
-    (state: RootState) => state.todo.select
+  const selectId = useAppSelector((state: RootState) => state.todo.selectId);
+  const { data: selectTodoData, isSuccess } = useGetTodoDetailQuery(
+    selectId ?? "",
+    {
+      skip: selectId === null,
+    }
   );
-
-  if (selectTodoData === null) {
-    throw new Error("selectTodo 가 null 이면서 TodoEdit 렌더링");
-  }
   const dispatch = useAppDispatch();
   const [editTodo] = useEditTodoMutation();
-  const [inputState, inputDispatch] = useReducer(reducer, initState, () =>
+
+  if (!isSuccess || selectTodoData === undefined) {
+    throw new Error("");
+  }
+
+  const [inputState, inputDispatch] = useReducer(
+    reducer,
     initFunction(selectTodoData)
   );
 
@@ -108,6 +112,7 @@ export function TodoEdit() {
 
   const handleSubmit = () => {
     editTodo(inputToTodo(selectTodoData.id, inputState));
+    dispatch(detailControl());
   };
 
   return (

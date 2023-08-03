@@ -6,7 +6,7 @@ export function SearchPanel() {
   const [keyword, setKeyword] = useState<string>("");
   const dispatch = useAppDispatch();
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     dispatch(setSearchKeyword(keyword));
   };
 
@@ -14,6 +14,7 @@ export function SearchPanel() {
     setKeyword("");
     dispatch(setSearchKeyword(""));
   };
+
   return (
     <div className="todo_search">
       <input

@@ -1,9 +1,12 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { TodoState } from "../todo/todoSlice";
+
+type TodoState = {
+  selectId: string | null;
+  searchKeyword: string;
+};
 
 const initialState: TodoState = {
-  todoList: {},
-  select: null,
+  selectId: null,
   searchKeyword: "",
 };
 
@@ -12,21 +15,16 @@ export const todoSlice = createSlice({
   initialState,
   reducers: {
     selectTodo: (state, action: PayloadAction<string>) => {
-      const id = action.payload;
-      state.select = state.todoList[id];
+      state.selectId = `${action.payload}`;
     },
     unselectTodo: (state) => {
-      state.select = null;
+      state.selectId = null;
     },
     setSearchKeyword: (state, action: PayloadAction<string>) => {
       state.searchKeyword = action.payload;
-    },
-    setTodoList: (state, action: PayloadAction<TodoState["todoList"]>) => {
-      state.todoList = action.payload;
     },
   },
 });
 
 export default todoSlice.reducer;
-export const { selectTodo, unselectTodo, setSearchKeyword, setTodoList } =
-  todoSlice.actions;
+export const { selectTodo, unselectTodo, setSearchKeyword } = todoSlice.actions;

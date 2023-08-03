@@ -1,5 +1,5 @@
 import { TodoApp } from "./pages/todo/TodoApp";
-// import { TodoQueryApp } from "./pages/todoQuery/TodoQueryApp";
+import { TodoQueryApp } from "./pages/todoQuery/TodoQueryApp";
 import { TodoThunkApp } from "./pages/todoThunk/TodoThunkApp";
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
       <hr />
       <TodoThunkApp />
       <hr />
-      {/* <TodoQueryApp /> */}
+      <TodoQueryApp />
     </>
   );
 }

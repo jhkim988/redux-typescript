@@ -1,8 +1,12 @@
 import { useReducer } from "react";
 import { TodoAddArgs } from "../../store/feature/todo/todoSlice";
 import { useAppDispatch } from "../../store/queryStore";
-import { addCancelControl } from "../../store/feature/control/controlSlice";
+import {
+  addCancelControl,
+  detailControl,
+} from "../../store/feature/control/controlSlice";
 import { useAddTodoMutation } from "../../store/feature/todoQuery/apiSlice";
+import { selectTodo } from "../../store/feature/todoQuery/todoSlice";
 
 const CHANGE_TEXT = "change_text";
 const CHANGE_YEAR = "change_year";
@@ -73,8 +77,12 @@ export function TodoAdd() {
     dispatch(addCancelControl());
   };
 
-  const handleSubmit = () => {
-    addTodo(inputStateToTodoAddArgs(inputState));
+  const handleSubmit = async () => {
+    const { id: todoId } = await addTodo(
+      inputStateToTodoAddArgs(inputState)
+    ).unwrap();
+    await dispatch(selectTodo(todoId));
+    dispatch(detailControl());
   };
 
   return (
