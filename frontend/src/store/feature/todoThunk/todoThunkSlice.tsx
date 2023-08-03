@@ -1,6 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchMock as fetch, todoListMock } from "./fetchMock";
-import { Todo, TodoAddArgs, TodoState } from "../todo/todoSlice";
+import { Todo, TodoAddArgs, TodoState, TodoStatus } from "../todo/todoSlice";
 import { detailCancelControl, detailControl } from "../control/controlSlice";
 
 const initialState: TodoState = {
@@ -13,9 +12,9 @@ const todoSlice = createSlice({
   name: "todo",
   initialState,
   reducers: {
-    selectTodo: (state, action: PayloadAction<string>) => {
-      const id = action.payload;
-      state.select = state.todoList[id];
+    selectTodo: (state, action: PayloadAction<Todo>) => {
+      const todo = action.payload;
+      state.select = todo;
     },
     unselectTodo: (state) => {
       state.select = null;
@@ -62,57 +61,60 @@ const todoSlice = createSlice({
 export const { selectTodo, unselectTodo, setSearchKeyword } = todoSlice.actions;
 export default todoSlice.reducer;
 
-let id = 3;
 const thunks = {
   addTodoFetch: createAsyncThunk(
     "todo/addTodo",
-    async (todo: TodoAddArgs, { dispatch }) => {
-      const result = await fetch<Todo>(
-        "/todo",
-        {
-          method: "POST",
-          body: JSON.stringify(todo),
-        },
-        { ...todo, status: "unstarted", id: `${id++}` }
-      );
+    async (args: TodoAddArgs, { dispatch }): Promise<Todo> => {
+      const resultJson = await fetch("http://localhost:8080/api/todo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(args),
+      }).then((res) => res.json());
+
+      const todo = {
+        id: resultJson.id,
+        status: "unstarted" as TodoStatus,
+        ...args,
+      };
+
+      dispatch(selectTodo(todo));
       dispatch(detailControl());
-      return result;
+      return todo;
     }
   ),
   editTodoFetch: createAsyncThunk(
     "todo/editTodo",
-    async (todo: Todo, { dispatch }) => {
-      const result = await fetch<Todo>(
-        `/todo/${todo.id}`,
-        { method: "PUT", body: JSON.stringify(todo) },
-        todo
-      );
+    async (todo: Todo, { dispatch }): Promise<Todo> => {
+      await fetch(`http://localhost:8080/api/todo/${todo.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(todo),
+      });
       dispatch(detailControl());
-      return result;
+      return todo;
     }
   ),
   removeTodoFetch: createAsyncThunk(
     "todo/removeTodo",
-    async (todoId: string, { dispatch }) => {
-      await fetch(`/todo/${todoId}`, { method: "DELETE" }, undefined);
+    async (todoId: string, { dispatch }): Promise<string> => {
+      await fetch(`http://localhost:8080/api/todo/${todoId}`, {
+        method: "DELETE",
+      });
       dispatch(detailCancelControl());
       return todoId;
     }
   ),
-  getTodoList: createAsyncThunk("todo/getTodoList", async (keyword: string) => {
-    const filteredKeys = Object.keys(todoListMock).filter((id) =>
-      todoListMock[id].text.includes(keyword)
-    );
-    const mockResponse = filteredKeys.reduce((acc, crnt) => {
-      acc[crnt] = todoListMock[crnt];
-      return acc;
-    }, {} as TodoState["todoList"]);
-    return await fetch(
-      `/todolist?keyword=${keyword}`,
-      { method: "GET" },
-      mockResponse
-    );
-  }),
+  getTodoList: createAsyncThunk(
+    "todo/getTodoList",
+    async (keyword: string): Promise<TodoState["todoList"]> => {
+      return await fetch(
+        `http://localhost:8080/api/todolist?keyword=${keyword}`,
+        {
+          method: "GET",
+        }
+      ).then((res) => res.json());
+    }
+  ),
 };
 
 export const { addTodoFetch, editTodoFetch, removeTodoFetch, getTodoList } =

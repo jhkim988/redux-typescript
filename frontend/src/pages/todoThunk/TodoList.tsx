@@ -22,7 +22,7 @@ export function TodoList() {
   const dispatch = useAppDispatch();
 
   const handleSelect = (todo: Todo) => {
-    dispatch(selectTodo(todo.id));
+    dispatch(selectTodo(todo));
     dispatch(detailControl());
   };
 
@@ -30,6 +30,8 @@ export function TodoList() {
   useEffect(() => {
     dispatch(getTodoList(keyword));
   }, [dispatch, keyword]);
+
+  console.log(selected);
 
   return (
     <div className="todo_list">
