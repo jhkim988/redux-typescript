@@ -2,7 +2,7 @@ import { BaseQueryFn, createApi } from "@reduxjs/toolkit/dist/query/react";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { TodoState, Todo, TodoAddArgs } from "../todo/todoSlice";
 
-const axiosBaseQuery =
+export const axiosBaseQuery =
   (
     { baseUrl }: { baseUrl: string } = { baseUrl: "" }
   ): BaseQueryFn<
@@ -60,7 +60,7 @@ export const axiosSlice = createApi({
       query: (todo) => ({
         url: `/todo`,
         method: `POST`,
-        body: todo,
+        data: todo,
       }),
       invalidatesTags: ["todolist"],
     }),
@@ -68,7 +68,7 @@ export const axiosSlice = createApi({
       query: (todo) => ({
         url: `/todo/${todo.id}`,
         method: `PUT`,
-        body: todo,
+        data: todo,
       }),
       invalidatesTags: ["todolist", "todoDetail"],
     }),
