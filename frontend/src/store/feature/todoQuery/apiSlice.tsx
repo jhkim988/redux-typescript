@@ -8,7 +8,6 @@ export const apiSlice = createApi({
   endpoints: (builder) => ({
     getTodoList: builder.query<TodoState["todoList"], string>({
       query: (keyword) => `/todolist?keyword=${keyword}`,
-      // providesTags: (_, __, args) => [{ type: "todolist", id: args }],
       providesTags: ["todolist"],
     }),
     getTodoDetail: builder.query<Todo, string>({

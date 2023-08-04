@@ -18,24 +18,21 @@ export function TodoList() {
     dispatch(detailControl());
   };
 
-  console.log("TodoList", typeof selectedId);
-
-  return (
-    isSuccess && (
-      <div className="todo_list">
-        {Object.values(todoList).map((todo) => (
-          <div
-            key={todo.id}
-            style={{
-              backgroundColor:
-                selectedId === todo.id ? "#6666FF" : "transparent",
-            }}
-            onClick={() => handleSelect(todo.id)}
-          >
-            {todo.text} {todo.status} {new Date(todo.deadline).toString()}
-          </div>
-        ))}
-      </div>
-    )
+  return isSuccess ? (
+    <div className="todo_list">
+      {Object.values(todoList).map((todo) => (
+        <div
+          key={todo.id}
+          style={{
+            backgroundColor: selectedId === todo.id ? "#6666FF" : "transparent",
+          }}
+          onClick={() => handleSelect(todo.id)}
+        >
+          {todo.text} {todo.status} {new Date(todo.deadline).toString()}
+        </div>
+      ))}
+    </div>
+  ) : (
+    <div>Loading...</div>
   );
 }
